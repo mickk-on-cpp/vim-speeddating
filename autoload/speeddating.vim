@@ -102,9 +102,13 @@ function! speeddating#increment(increment)
     endif
   endfor
   if a:increment > 0
-    exe "norm ". a:increment."\<Plug>SpeedDatingFallbackUp"
+    let l:fallback = maparg("<Plug>SpeedDatingFallbackUp", "n")
+    let l:fallback = eval('"'.escape(l:fallback, '\"<').'"')
+    exe "norm! ". a:increment.l:fallback
   else
-    exe "norm ".-a:increment."\<Plug>SpeedDatingFallbackDown"
+    let l:fallback = maparg("<Plug>SpeedDatingFallbackDown", "n")
+    let l:fallback = eval('"'.escape(l:fallback, '\"<').'"')
+    exe "norm! ".-a:increment.l:fallback
   endif
   silent! call repeat#set("\<Plug>SpeedDating" . (a:increment < 0 ? "Down" : "Up"),a:increment < 0 ? -a:increment : a:increment)
 endfunction
